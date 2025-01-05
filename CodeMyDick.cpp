@@ -86,13 +86,25 @@ void writeColumnMultiplication(double a, double b){
     double sum = 0;
     int constDec = lo ? aDecimalPlaces : bDecimalPlaces;
     if(res.size() == 1){
-        cout << right << setw(width) << res[0] << endl;
+        cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
+        << res[0] / pow(10, totalDecimalPlaces) << endl;
     }
     else{
         for(int i = 0; i < res.size(); i++){
             if(res[i] > 0){
                 if(totalDecimalPlaces != 0){
-                    cout << right << setw(width - pos[i]) << fixed << setprecision(totalDecimalPlaces - pos[i]) << res[i] / pow(10, totalDecimalPlaces - pos[i]) << endl;
+                    if(totalDecimalPlaces - pos[i] > 0){
+                        cout << right << setw(width - pos[i]) << fixed 
+                        << setprecision(totalDecimalPlaces - pos[i]) 
+                        << res[i] / pow(10, totalDecimalPlaces - pos[i]) << endl;
+                    }
+                    else if(totalDecimalPlaces - pos[i] == 0){
+                        cout << right << setw(width - pos[i] - 1) << setprecision(0)
+                        << res[i] / pow(10, totalDecimalPlaces - pos[i]) << '.' << endl;
+                    }
+                    else{
+                        cout << right << setw(width - pos[i]) << res[i] << endl;
+                    }
                 }
                 else{
                     cout << right << setw(width - pos[i]) << res[i] << endl;
