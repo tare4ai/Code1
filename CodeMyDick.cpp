@@ -112,7 +112,8 @@ void writeColumnMultiplication(double a, double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-        sum += res[i] / pow(10, totalDecimalPlaces - pos[i]) ;
+            sum += static_cast<double>(res[i]) / pow(10, totalDecimalPlaces - pos[i]);
+
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
