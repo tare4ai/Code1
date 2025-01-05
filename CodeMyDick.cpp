@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 #include <vector>
+
 using namespace std;
 
 int countDecimalPlaces(double num) {
@@ -93,7 +94,6 @@ void writeColumnMultiplication(double a, double b){
         return;
     }
 
-    long long sum = 0;
     int constDec = lo ? aDecimalPlaces : bDecimalPlaces;
     if(res.size() == 1){
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
@@ -108,7 +108,7 @@ void writeColumnMultiplication(double a, double b){
                         << setprecision(totalDecimalPlaces - pos[i]) 
                         << res[i] / pow(10, totalDecimalPlaces - pos[i]) << endl;
                     }
-                    else if(totalDecimalPlaces - pos[i] == 0){
+                    else if(totalDecimalPlaces - pos[i] <= 0){
                         cout << right << setw(width - pos[i] - 1) << setprecision(0)
                         << res[i] / pow(10, totalDecimalPlaces - pos[i]) << '.' << endl;
                     }
@@ -120,13 +120,13 @@ void writeColumnMultiplication(double a, double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-            sum += res[i] * pow(10, i);
+            
 
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
-        << static_cast<double> (sum) / pow(10, totalDecimalPlaces);
+        << static_cast<double> (a * b);
     }
    
 }
