@@ -46,8 +46,11 @@ int findWidth(double a, double b){
     str2.erase(str2.find_last_not_of('.') + 1, string::npos);
 
     
-    if(countDecimalPlaces(a) == 0 && countDecimalPlaces(b) == 0){
+    if(countDecimalPlaces(a) == 0 && countDecimalPlaces(b) == 0 && ((a != 0 && b != 0))){
         width = to_string(static_cast<long long>(a * b)).length();
+    }
+    else if(a == 0 || b == 0){
+        width = max(to_string(static_cast<long long>(a)).length(), to_string(static_cast<long long>(a)).length());
     }
     else{
         width = to_string(static_cast<long long>(a * b)).length()
@@ -65,7 +68,7 @@ void writeColumnMultiplication(double a, double b){
     int width = findWidth(a, b);
     int aDecimalPlaces = countDecimalPlaces(a);
     int bDecimalPlaces = countDecimalPlaces(b);
-
+   
     int totalDecimalPlaces = aDecimalPlaces + bDecimalPlaces;
     long long intA = static_cast<long long>(round(a * pow(10, aDecimalPlaces)));
     long long intB = static_cast<long long>(round(b * pow(10, bDecimalPlaces)));
@@ -83,6 +86,11 @@ void writeColumnMultiplication(double a, double b){
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         countColumnMultiplication(res, pos, intA, intB);
+    }
+
+     if(a == 0 || b == 0){ 
+        cout << right << setw(width) << 0;
+        return;
     }
 
     long long sum = 0;
