@@ -85,7 +85,7 @@ void writeColumnMultiplication(double a, double b){
         countColumnMultiplication(res, pos, intA, intB);
     }
 
-    double sum = 0;
+    long long sum = 0;
     int constDec = lo ? aDecimalPlaces : bDecimalPlaces;
     if(res.size() == 1){
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
@@ -112,12 +112,13 @@ void writeColumnMultiplication(double a, double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-            sum += static_cast<double>(res[i]) / pow(10, totalDecimalPlaces - pos[i]);
+            sum += res[i] * pow(10, i);
 
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
-        cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) << sum;
+        cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
+        << static_cast<double> (sum) / pow(10, totalDecimalPlaces);
     }
    
 }
