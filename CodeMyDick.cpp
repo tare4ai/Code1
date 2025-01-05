@@ -15,12 +15,13 @@ int countDecimalPlaces(double num) {
     return 0; 
 }
 
-void countColumnMultiplication(vector<long long> &res, vector<int> &pos, int intNum, int intNum2){
-    int multiplier = intNum;
+void countColumnMultiplication(vector<long long> &res, vector<int> &pos, long long intNum, long long intNum2)
+{
+    long long multiplier = intNum;
         int position = 0;
         while (multiplier > 0) {
         
-            int digit = multiplier % 10;
+            long long digit = multiplier % 10;
             if(digit > 0){
                 res.push_back(intNum2 * digit);
             }
@@ -30,6 +31,7 @@ void countColumnMultiplication(vector<long long> &res, vector<int> &pos, int int
             multiplier /= 10;
             pos.push_back(position);
             position++;
+
         }
 }
 
@@ -43,13 +45,13 @@ int findWidth(double a, double b){
     str1.erase(str1.find_last_not_of('.') + 1, string::npos);
     str2.erase(str2.find_last_not_of('.') + 1, string::npos);
 
-
+    
     if(countDecimalPlaces(a) == 0 && countDecimalPlaces(b) == 0){
-        width = to_string(static_cast<int>(a * b)).length();
+        width = to_string(static_cast<long long>(a * b)).length();
     }
     else{
-        width = to_string(static_cast<int>(a * b)).length() 
-        + countDecimalPlaces(a) + countDecimalPlaces(b) +  1;
+        width = to_string(static_cast<long long>(a * b)).length()
+        + countDecimalPlaces(a) + countDecimalPlaces(b) + 1;
     }
     
     
@@ -69,15 +71,15 @@ void writeColumnMultiplication(double a, double b){
     long long intB = static_cast<long long>(round(b * pow(10, bDecimalPlaces)));
 
     if(lo){
-        cout << right << setw(width) << a << endl;
-        cout << right << setw(width) << b << endl;
+        cout << right << setw(width) << fixed << setprecision(countDecimalPlaces(a)) << a << endl;
+        cout << right << setw(width) << fixed << setprecision(countDecimalPlaces(b)) << b << endl;
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         countColumnMultiplication(res, pos,intB, intA);
     }
     else{
-        cout << setw(width) << right << b << endl;
-        cout << setw(width) << right << a << endl;
+        cout << setw(width) << right << fixed << setprecision(countDecimalPlaces(b)) << b << endl;
+        cout << setw(width) << right << fixed << setprecision(countDecimalPlaces(a)) << a << endl;
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         countColumnMultiplication(res, pos, intA, intB);
