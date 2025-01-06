@@ -121,13 +121,13 @@ void writeColumnMultiplication(long double a, long double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-            sum += res[i] / pow(10, totalDecimalPlaces - pos[i]);
+            sum += res[i] * pow(10, pos[i]);
 
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
-        << static_cast<long double> (sum);
+        << static_cast<long double> (sum) / pow(10, totalDecimalPlaces);
     }
    
 }
@@ -135,6 +135,7 @@ void writeColumnMultiplication(long double a, long double b){
 
 int main() {
     long double a, b;
+
     cin >> a >> b;
     writeColumnMultiplication(a, b);
     
