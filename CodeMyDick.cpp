@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int countDecimalPlaces(double num) {
+int countDecimalPlaces(long double num) {
     string str = to_string(num);
     str.erase(str.find_last_not_of('0') + 1, string::npos);
     size_t pos = str.find('.');
@@ -62,7 +62,7 @@ int findWidth(double a, double b){
     return width;
 }
 
-void writeColumnMultiplication(double a, double b){
+void writeColumnMultiplication(long double a, long double b){
     vector<long long> res;
     vector<int> pos;
     bool lo(to_string(static_cast<long long>(a)).length() + countDecimalPlaces(a) >= to_string(static_cast<long long>(b)).length() + countDecimalPlaces(b));
@@ -94,6 +94,7 @@ void writeColumnMultiplication(double a, double b){
         return;
     }
 
+    long double sum = 0;
     int constDec = lo ? aDecimalPlaces : bDecimalPlaces;
     if(res.size() == 1){
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
@@ -120,20 +121,20 @@ void writeColumnMultiplication(double a, double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-            
+            sum += res[i] / pow(10, totalDecimalPlaces - pos[i]);
 
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
-        << static_cast<double> (a * b);
+        << static_cast<long double> (sum);
     }
    
 }
 
 
 int main() {
-    double a, b;
+    long double a, b;
     cin >> a >> b;
     writeColumnMultiplication(a, b);
     
