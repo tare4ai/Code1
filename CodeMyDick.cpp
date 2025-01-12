@@ -4,7 +4,13 @@
 #include <cmath>
 #include <vector>
 
+
 using namespace std;
+
+long double roundToPrecision(long double value, int precision) {
+    double factor = std::pow(10, precision);
+    return std::round(value * factor) / factor;
+}
 
 int countDecimalPlaces(long double num) {
     string str = to_string(num);
@@ -94,7 +100,7 @@ void writeColumnMultiplication(long double a, long double b){
         return;
     }
 
-    long double sum = 0;
+    long long sum = 0;
     int constDec = lo ? aDecimalPlaces : bDecimalPlaces;
     if(res.size() == 1){
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
@@ -110,7 +116,7 @@ void writeColumnMultiplication(long double a, long double b){
                         << res[i] / pow(10, totalDecimalPlaces - pos[i]) << endl;
                     }
                     else if(totalDecimalPlaces - pos[i] <= 0){
-                        cout << right << setw(width - pos[i] - 1) << setprecision(0)
+                        cout << right << setw(width - pos[i] - 1)  << setprecision(0)
                         << res[i] / pow(10, totalDecimalPlaces - pos[i]) << '.' << endl;
                     }
                     else{
@@ -121,6 +127,7 @@ void writeColumnMultiplication(long double a, long double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
+            long long test = res[i] * static_cast<long long> (pow(10, pos[i]));
             sum += res[i] * pow(10, pos[i]);
 
         }
