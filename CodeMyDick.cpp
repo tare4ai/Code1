@@ -4,13 +4,7 @@
 #include <cmath>
 #include <vector>
 
-
 using namespace std;
-
-long double roundToPrecision(long double value, int precision) {
-    double factor = std::pow(10, precision);
-    return std::round(value * factor) / factor;
-}
 
 int countDecimalPlaces(long double num) {
     string str = to_string(num);
@@ -68,17 +62,65 @@ int findWidth(double a, double b){
     return width;
 }
 
+void countColumnSums(vector<long long> &res, vector<int> &positions, vector<int> &columnSums) {
+
+    int maxColumn = 0;
+    for (size_t i = 0; i < res.size(); i++) {
+        int columnPosition = to_string(res[i]).length() + positions[i] - 1;
+        maxColumn = max(maxColumn, columnPosition);
+    }
+
+    columnSums.assign(maxColumn + 1, 0);
+
+    for (size_t i = 0; i < res.size(); i++) {
+        long long value = res[i];
+        int pos = positions[i];
+
+        int column = pos;
+        while (value > 0) {
+            columnSums[column] += value % 10; 
+            value /= 10; 
+            column++;
+        }
+    }
+
+    for (size_t i = 0; i < columnSums.size(); i++) {
+        if (columnSums[i] >= 10) {
+            if (i + 1 >= columnSums.size()) {
+                columnSums.push_back(0);
+            }
+            columnSums[i + 1] += columnSums[i] / 10; 
+            columnSums[i] %= 10; 
+        }
+    }
+}
+
+bool isPowerOfTen(long long n) {
+    if (n <= 0) return false;  
+    while (n % 10 == 0) {
+        n /= 10;  
+    }
+    return n == 1;  
+}
+
 void writeColumnMultiplication(long double a, long double b){
     vector<long long> res;
     vector<int> pos;
-    bool lo(to_string(static_cast<long long>(a)).length() + countDecimalPlaces(a) >= to_string(static_cast<long long>(b)).length() + countDecimalPlaces(b));
-    int width = findWidth(a, b);
+    
+    bool lo(to_string(static_cast<long long>(a)).length() + countDecimalPlaces(a) 
+    >= to_string(static_cast<long long>(b)).length() + countDecimalPlaces(b));
+    
     int aDecimalPlaces = countDecimalPlaces(a);
     int bDecimalPlaces = countDecimalPlaces(b);
    
     int totalDecimalPlaces = aDecimalPlaces + bDecimalPlaces;
     long long intA = static_cast<long long>(round(a * pow(10, aDecimalPlaces)));
     long long intB = static_cast<long long>(round(b * pow(10, bDecimalPlaces)));
+
+    int width;
+    if(isPowerOfTen(intA) || isPowerOfTen(intB)){
+        width = findWidth(a, b) - totalDecimalPlaces;
+    }else{width = findWidth(a, b);}
 
     if(lo){
         cout << right << setw(width) << fixed << setprecision(countDecimalPlaces(a)) << a << endl;
@@ -95,7 +137,7 @@ void writeColumnMultiplication(long double a, long double b){
         countColumnMultiplication(res, pos, intA, intB);
     }
 
-     if(a == 0 || b == 0){ 
+    if(a == 0 || b == 0){ 
         cout << right << setw(width) << 0;
         return;
     }
@@ -105,6 +147,11 @@ void writeColumnMultiplication(long double a, long double b){
     if(res.size() == 1){
         cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
         << res[0] / pow(10, totalDecimalPlaces) << endl;
+        return;
+    }
+    else if(isPowerOfTen(intA) || isPowerOfTen(intB)){
+        cout << right << setw(width) << a * b << endl;
+        return;
     }
     else{
         for(int i = 0; i < res.size(); i++){
@@ -127,14 +174,27 @@ void writeColumnMultiplication(long double a, long double b){
                     cout << right << setw(width - pos[i]) << res[i] << endl;
                 }
             }
-            long long test = res[i] * static_cast<long long> (pow(10, pos[i]));
-            sum += res[i] * pow(10, pos[i]);
 
         }
         cout << setw(width) << setfill('-') << "" << endl;
         cout << setfill(' ');
-        cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces) 
-        << static_cast<long double> (sum) / pow(10, totalDecimalPlaces);
+
+        vector<int> columnSums;
+        countColumnSums(res, pos, columnSums);
+
+        if(totalDecimalPlaces != 0){
+            for(int i = columnSums.size() - 1; i >= 0 ; i--){
+                cout << columnSums[i];
+                if(i == totalDecimalPlaces){
+                    cout << '.';
+                }
+            }
+        }
+        else{
+             for(int i = columnSums.size() - 1; i >= 0 ; i--){
+                    cout << columnSums[i];
+            }
+        }
     }
    
 }
