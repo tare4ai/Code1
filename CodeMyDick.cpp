@@ -95,12 +95,21 @@ void countColumnSums(vector<long long> &res, vector<int> &positions, vector<int>
     }
 }
 
+int countPowOfTen(long long n){
+    int countZero = 0;
+    while (n % 10 == 0) {
+        n /= 10;  
+        countZero++;
+    }
+    return countZero;
+}
+
 bool isPowerOfTen(long long n) {
     if (n <= 0) return false;  
     while (n % 10 == 0) {
         n /= 10;  
     }
-    return n == 1;  
+    return n < 10;  
 }
 
 void writeColumnMultiplication(long double a, long double b){
@@ -117,10 +126,13 @@ void writeColumnMultiplication(long double a, long double b){
     long long intA = static_cast<long long>(round(a * pow(10, aDecimalPlaces)));
     long long intB = static_cast<long long>(round(b * pow(10, bDecimalPlaces)));
 
-    int width;
+    int width = 0;
     if(isPowerOfTen(intA) || isPowerOfTen(intB)){
-        width = findWidth(a, b) - 1;
-    }else{width = findWidth(a, b);}
+        int countZero = isPowerOfTen(intA) ? countPowOfTen(a) : countPowOfTen(b);
+        width = findWidth(a, b) - countZero;
+    }
+    else{
+    width = findWidth(a, b);}
 
     if(lo){
         cout << right << setw(width) << fixed << setprecision(countDecimalPlaces(a)) << a << endl;
@@ -150,7 +162,8 @@ void writeColumnMultiplication(long double a, long double b){
         return;
     }
     else if(isPowerOfTen(intA) || isPowerOfTen(intB)){
-        cout << right << setw(width) << a * b << endl;
+        int countZero = isPowerOfTen(intA) ? countPowOfTen(a) : countPowOfTen(b);
+        cout << right << setw(width) << fixed << setprecision(totalDecimalPlaces - countZero) << a * b << endl;
         return;
     }
     else{
