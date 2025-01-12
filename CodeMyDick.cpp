@@ -119,7 +119,7 @@ void writeColumnMultiplication(long double a, long double b){
 
     int width;
     if(isPowerOfTen(intA) || isPowerOfTen(intB)){
-        width = findWidth(a, b) - totalDecimalPlaces;
+        width = findWidth(a, b) - 1;
     }else{width = findWidth(a, b);}
 
     if(lo){
